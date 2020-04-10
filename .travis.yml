@@ -1,0 +1,19 @@
+language: python
+python:
+- '3.6'
+install:
+- pip install -r requirements.txt
+- pip install pytest
+- pip install codecov
+- pip install pytest-cov
+script:
+- py.test --cov=trees tests/*_u.py
+after_success:
+- codecov
+deploy:
+  provider: pypi
+  user: kariminf
+  on:
+      python: '3.6'
+  password:
+    secure: HIjajevR4IL43y/gXrZ1wz6f0L926mBgwNUXJsnOqbUisrQX8rCpxIwSgoJSrY33QCVX7Y2YZ3Czh2r13mXqsOaxcx/N/JllcmfS3h8SCqb+UVRk3ohOP9X5Ds4Jq5LSgxIwz9dqwOR4WWOBUuTChjPrrvFoeNY8/TknGh1tvuRNhNNWRSyzE1b4HZJQJWY8kcvejL79klPQZ05/kplgiddIErWqDZu7w+CgkS1A8iduNOCMhak6GA6atdSQ6KuhlcwlJ/k9i24ZxYJlcHzqnZ5JIpnHQ9iJ36JDZWZbgfH3CiJlevoJqOHCbVKBWXHKIoLpj01h11TvrzgzNTiK374fgINz0MZw8V9j6GFSesBZtOL/Jsj4wUDiK4am6pG5CBoM71M/9lAcd//GruxL5eTZ4H8VbJqANO7/6aEEXUBH2/IXR/yDtz7CNBgQGZap3KcqzypsdE0pLLiSX2wFb1C2nbY/MBm+PKsEbH0VzdcNpokCdTgiNxl48+k4GGUqaHUe9tiP5T1iM5VSZ2oKDvVJnX/bJ1d2RhBCz9T6tQAYGI1R8/G3w4w7O2N5gyQsvRkeatSGqkWD8HDffxKeKMav0vetESOepCf6feEvbBGWxzWvM/TPmUXxkDredHv8XJ9AvXvZvgGQx8RdKe9rx4UY7XVOS31yF/3RjSPThdo=

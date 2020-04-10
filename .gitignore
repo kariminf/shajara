@@ -127,3 +127,14 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# System
+.directory
+.cache
+
+#directories
+test_ress/
+.pytest_cache/
+
+#sphinx
+sphinx/source/api/
