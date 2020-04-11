@@ -19,37 +19,35 @@
 # limitations under the License.
 #
 
-from trees import NodeProcessor
+from trees import NodeProcessor, Node
 
-class GraphvizProcessor(NodeProcessor):
+class GenerateProcessor(NodeProcessor):
+
+    def __init__(self, rep):
+        self.rep = rep
+
+    def _fill_node(self, node, rep):
+        for val in rep:
+            setattr(node, val, rep[val])
 
     def root_init(self, root):
-        self.nbr = 0
-        self.graph = "digraph Tree {\nnode [shape=box] ;\n"
-        self.father_id = []
+        self._fill_node(root, self.rep)
 
     def root_final(self, root):
-        self.graph += "}"
-
-    def _fill_node(self, node):
-        self.nbr += 1
-        nid = 'N' + str(self.nbr)
-        self.graph += nid + '[label="' + node.label + '"];\n'
-        return nid
+        pass
 
     def child_pre_process(self, node, key):
-        nid = self._fill_node(node.children[key])
-        self.graph += self.father_id[-1] + ' -> ' + nid + ' [label="' + key + '"];\n'
-        self.father_id.append(nid)
+        child = Node()
+        self._fill_node(child, node.children[key])
+        node.children[key] = child
         return False
 
     def child_post_process(self, node, child_key):
-        self.father_id.pop()
         return False
 
     def pre_process(self, node):
-        if len(self.father_id) == 0:
-            self.father_id.append(self._fill_node(node))
+        if not node.children:
+            return []
         return node.children.keys()
 
     def post_process(self, node):
@@ -57,6 +55,4 @@ class GraphvizProcessor(NodeProcessor):
         pass
 
     def result(self):
-        return self.graph
-
-graphviz_processor = GraphvizProcessor()
+        pass

@@ -1,0 +1,14 @@
+digraph Tree {
+node [shape=box] ;
+N1[label="five"];
+N2[label="two_again"];
+N1 -> N2 [label=">"];
+N3[label="three"];
+N2 -> N3 [label="<"];
+N4[label="nine"];
+N1 -> N4 [label="<"];
+N5[label="seven"];
+N4 -> N5 [label=">"];
+N6[label="eleven"];
+N4 -> N6 [label="<"];
+}

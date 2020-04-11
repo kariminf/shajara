@@ -26,26 +26,17 @@ release = "0.1.0"
 
 class NodeProcessor(object):
 
-    def root_init(self):
+    def root_init(self, root):
         pass
 
-    def root_final(self):
+    def root_final(self, root):
         pass
 
     def child_pre_process(self, node, child_key):
-        print("pre_processing " + str(node.children[child_key].label))
         return False
 
     def child_post_process(self, node, child_key):
-        print("post_processing " + str(node.children[child_key].label))
         return False
-
-    def pre_process(self, node):
-        print("begin processing " + str(node.label))
-        return node.children.keys()
-
-    def post_process(self, node):
-        print("end processing " + str(node.label))
 
     def result(self):
         pass
@@ -54,9 +45,9 @@ class NodeProcessor(object):
         children_keys = self.pre_process(node)
         for child_key in children_keys:
             if self.child_pre_process(node, child_key):
-                break
+                next
             if self.process(node.children[child_key]):
-                break
+                next
             if self.child_post_process(node, child_key):
                 break
         self.post_process(node)
@@ -78,12 +69,30 @@ class Tree(object):
 
     def __init__(self, value=0, label=""):
         self.root = Node(value, label)
+        self.create_stack = [self.root]
 
     def get_root(self):
         return self.root
 
     def process(self, processor=def_processor):
-        processor.root_init()
+        processor.root_init(self.root)
         processor.process(self.root)
-        processor.root_final()
+        processor.root_final(self.root)
         return processor.result()
+
+    def add_child(self, label, node):
+        current = self.create_stack[-1]
+        current.append_child(label, node)
+        return self
+
+    def select_child(self, label):
+        current = self.create_stack[-1]
+        current = current.children[label]
+        if current:
+            self.create_stack.append(current)
+        return self
+
+    def up(self):
+        if len(self.create_stack) > 1:
+            self.create_stack.pop()
+        return self

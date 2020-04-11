@@ -5,3 +5,5 @@
 * Initial version
 * gneric tree
 * ploting graphviz
+* binary search tree
+* decision trees
