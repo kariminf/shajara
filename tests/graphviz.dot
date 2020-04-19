@@ -11,8 +11,4 @@ N5[label="c"];
 N1 -> N5 [label="ac"];
 N6[label="d"];
 N1 -> N6 [label="ad"];
-N7[label="g"];
-N6 -> N7 [label="dg"];
-N8[label="h"];
-N6 -> N8 [label="dh"];
 }

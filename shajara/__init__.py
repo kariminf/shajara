@@ -43,7 +43,7 @@ class NodeProcessor(object):
 
     def root_final(self, root):
         pass
-    
+
     def result(self):
         pass
 
@@ -201,4 +201,4 @@ class Tree(object):
             The current node
 
         """
-        return node_stack[-1]
+        return self.node_stack[-1]
