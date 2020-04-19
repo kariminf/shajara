@@ -138,3 +138,6 @@ test_ress/
 
 #sphinx
 sphinx/source/api/
+
+# DOT
+*.dot
