@@ -26,31 +26,37 @@ release = "0.1.0"
 
 class NodeProcessor(object):
 
+    def _pre_process(self, node):
+        pass
+
+    def _post_process(self, node):
+        pass
+
+    def _child_pre_process(self, node, child_key):
+        return False
+
+    def _child_post_process(self, node, child_key):
+        return False
+
     def root_init(self, root):
         pass
 
     def root_final(self, root):
         pass
-
-    def child_pre_process(self, node, child_key):
-        return False
-
-    def child_post_process(self, node, child_key):
-        return False
-
+    
     def result(self):
         pass
 
     def process(self, node):
-        children_keys = self.pre_process(node)
+        children_keys = self._pre_process(node)
         for child_key in children_keys:
-            if self.child_pre_process(node, child_key):
+            if self._child_pre_process(node, child_key):
                 next
             if self.process(node.children[child_key]):
                 next
-            if self.child_post_process(node, child_key):
+            if self._child_post_process(node, child_key):
                 break
-        self.post_process(node)
+        self._post_process(node)
 
 def_processor = NodeProcessor()
 
@@ -66,33 +72,133 @@ class Node(object):
 
 
 class Tree(object):
+    """Generic tree representation
+
+    Parameters
+    ----------
+    value : type
+        the value of the root node
+    label : type
+        the label of the root node
+
+    Attributes
+    ----------
+    root : Node
+        The root node
+    node_stack : array
+        the stack for browsing nodes
+
+    """
 
     def __init__(self, value=0, label=""):
         self.root = Node(value, label)
-        self.create_stack = [self.root]
+        self.node_stack = [self.root]
 
     def get_root(self):
+        """Returns the root of the tree
+
+        Parameters
+        ----------
+
+
+        Returns
+        -------
+        Node
+            The root of the tree if it exists or None
+
+        """
         return self.root
 
     def process(self, processor=def_processor):
+        """Short summary.
+
+        Parameters
+        ----------
+        processor : NodeProcessor
+            the processor used to manipulate the tree starting from its root
+
+        Returns
+        -------
+        type
+            The result of processing, it can be None, a node, a string, etc.
+
+        """
         processor.root_init(self.root)
         processor.process(self.root)
         processor.root_final(self.root)
         return processor.result()
 
     def add_child(self, label, node):
-        current = self.create_stack[-1]
+        """Adds a child to the current node.
+        To browse the nodes use select_child and up
+
+        Parameters
+        ----------
+        label : str or int
+            The label of the arc
+        node : Node
+            The node to add as a child
+
+        Returns
+        -------
+        Tree
+            this object
+
+        """
+        current = self.node_stack[-1]
         current.append_child(label, node)
         return self
 
     def select_child(self, label):
-        current = self.create_stack[-1]
+        """Select a child node of the current one, using its label.
+        Used to browsing the tree down.
+
+        Parameters
+        ----------
+        label : str or int
+            the label of the label of the arc
+
+        Returns
+        -------
+        Tree
+            this object
+
+        """
+        current = self.node_stack[-1]
         current = current.children[label]
         if current:
-            self.create_stack.append(current)
+            self.node_stack.append(current)
         return self
 
     def up(self):
-        if len(self.create_stack) > 1:
-            self.create_stack.pop()
+        """Select the parent of the current node.
+        Used to browsing the tree up.
+
+        Parameters
+        ----------
+
+
+        Returns
+        -------
+        type
+            this object
+
+        """
+        if len(self.node_stack) > 1:
+            self.node_stack.pop()
         return self
+
+    def current_node(self):
+        """Returns the current node
+
+        Parameters
+        ----------
+
+
+        Returns
+        -------
+        Node
+            The current node
+
+        """
+        return node_stack[-1]

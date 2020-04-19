@@ -24,8 +24,8 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from trees.plot import graphviz_processor
-from trees import Tree, Node
+from shajara.plot import graphviz_processor
+from shajara import Tree, Node
 
 t = Tree(label="a")
 t.add_child("ab", Node(label="b")).add_child("ac", Node(label="c")).add_child("ad", Node(label="d"))
@@ -34,6 +34,6 @@ t.up().select_child("ad").add_child("dg", Node(label="g")).add_child("dh", Node(
 
 graph = t.process(processor=graphviz_processor)
 
-f = open("graphviz_trees.dot", "w")
+f = open("shajara.dot", "w")
 f.write(graph)
 f.close()

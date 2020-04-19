@@ -19,40 +19,42 @@
 # limitations under the License.
 #
 
-from trees import NodeProcessor, Node
+from . import NodeProcessor, Node
 
 class GenerateProcessor(NodeProcessor):
+    """Generates a tree given a representation using dictionaries
+
+    Parameters
+    ----------
+    rep : dict
+        A dictionary representing the tree
+
+    Attributes
+    ----------
+    rep
+
+    """
 
     def __init__(self, rep):
         self.rep = rep
 
-    def _fill_node(self, node, rep):
+    def __fill_node(self, node, rep):
         for val in rep:
             setattr(node, val, rep[val])
 
-    def root_init(self, root):
-        self._fill_node(root, self.rep)
-
-    def root_final(self, root):
-        pass
-
-    def child_pre_process(self, node, key):
-        child = Node()
-        self._fill_node(child, node.children[key])
-        node.children[key] = child
-        return False
-
-    def child_post_process(self, node, child_key):
-        return False
-
-    def pre_process(self, node):
+    def _pre_process(self, node):
         if not node.children:
             return []
         return node.children.keys()
 
-    def post_process(self, node):
-        #self.father_id.pop()
-        pass
+    def _child_pre_process(self, node, key):
+        child = Node()
+        self.__fill_node(child, node.children[key])
+        node.children[key] = child
+        return False
 
-    def result(self):
-        pass
+    def _child_post_process(self, node, child_key):
+        return False
+
+    def root_init(self, root):
+        self.__fill_node(root, self.rep)

@@ -24,9 +24,9 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from trees.plot import graphviz_processor
+from shajara.plot import graphviz_processor
 #from trees import Tree, Node
-from trees.search import BSearchTree, binary_searcher
+from shajara.search import BSearchTree, binary_searcher
 
 # values = [1, 2, 3, 4, 5, 6, 3]
 # labels = ["one", "two", "three", "four", "five", "six", "three"]

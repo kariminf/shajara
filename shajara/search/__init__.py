@@ -19,30 +19,11 @@
 # limitations under the License.
 #
 
-from trees import NodeProcessor, Node, Tree
+from .. import NodeProcessor, Node, Tree
 
 class BSearchProcessor(NodeProcessor):
 
-    def set_parameters(self, value, label="", add=False):
-        self.value = value
-        self.add = add
-        self.label = label
-        self.rel = "="
-
-    def root_init(self, root):
-        self.node = root
-        self.found = False
-
-    def root_final(self, root):
-        pass
-
-    def child_pre_process(self, node, key):
-        return False
-
-    def child_post_process(self, node, child_key):
-        return False
-
-    def pre_process(self, node):
+    def _pre_process(self, node):
         self.node = node
         if node.value < self.value :
             self.rel = "<"
@@ -70,11 +51,18 @@ class BSearchProcessor(NodeProcessor):
 
         return [self.rel]
 
-    def post_process(self, node):
-        pass
+    def root_init(self, root):
+        self.node = root
+        self.found = False
 
     def result(self):
         return self.found, self.node, self.rel
+
+    def set_parameters(self, value, label="", add=False):
+        self.value = value
+        self.add = add
+        self.label = label
+        self.rel = "="
 
 binary_searcher = BSearchProcessor()
 

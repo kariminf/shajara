@@ -19,9 +19,31 @@
 # limitations under the License.
 #
 
-from trees import NodeProcessor
+from . import NodeProcessor
 
 class GraphvizProcessor(NodeProcessor):
+    """Generates DOT representation of a tree"""
+
+    def __fill_node(self, node):
+        self.nbr += 1
+        nid = 'N' + str(self.nbr)
+        self.graph += nid + '[label="' + node.label + '"];\n'
+        return nid
+
+    def _pre_process(self, node):
+        if len(self.father_id) == 0:
+            self.father_id.append(self.__fill_node(node))
+        return node.children.keys()
+
+    def _child_pre_process(self, node, key):
+        nid = self.__fill_node(node.children[key])
+        self.graph += self.father_id[-1] + ' -> ' + nid + ' [label="' + key + '"];\n'
+        self.father_id.append(nid)
+        return False
+
+    def _child_post_process(self, node, child_key):
+        self.father_id.pop()
+        return False
 
     def root_init(self, root):
         self.nbr = 0
@@ -30,31 +52,6 @@ class GraphvizProcessor(NodeProcessor):
 
     def root_final(self, root):
         self.graph += "}"
-
-    def _fill_node(self, node):
-        self.nbr += 1
-        nid = 'N' + str(self.nbr)
-        self.graph += nid + '[label="' + node.label + '"];\n'
-        return nid
-
-    def child_pre_process(self, node, key):
-        nid = self._fill_node(node.children[key])
-        self.graph += self.father_id[-1] + ' -> ' + nid + ' [label="' + key + '"];\n'
-        self.father_id.append(nid)
-        return False
-
-    def child_post_process(self, node, child_key):
-        self.father_id.pop()
-        return False
-
-    def pre_process(self, node):
-        if len(self.father_id) == 0:
-            self.father_id.append(self._fill_node(node))
-        return node.children.keys()
-
-    def post_process(self, node):
-        #self.father_id.pop()
-        pass
 
     def result(self):
         return self.graph

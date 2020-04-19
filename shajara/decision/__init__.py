@@ -19,7 +19,7 @@
 # limitations under the License.
 #
 
-from trees import NodeProcessor, Node
+from .. import NodeProcessor, Node
 
 class DecisionProcessor(NodeProcessor):
 
@@ -29,20 +29,11 @@ class DecisionProcessor(NodeProcessor):
         self.stop_fun = stop_fun
         self.split_fun = split_fun
 
-    def root_init(self, root):
+    def _root_init(self, root):
         setattr(root, "X", self.X)
         setattr(root, "Y", self.Y)
 
-    def root_final(self, root):
-        pass
-
-    def child_pre_process(self, node, key):
-        return False
-
-    def child_post_process(self, node, child_key):
-        return False
-
-    def pre_process(self, node):
+    def _pre_process(self, node):
         test, test_res, attr = self.stop_fun(node.X, node.Y)
         if test:
             for val in attr:
@@ -56,9 +47,3 @@ class DecisionProcessor(NodeProcessor):
             setattr(child, "Y", the_set.Y)
             node.children[key] = child
         return node.children.keys()
-
-    def post_process(self, node):
-        pass
-
-    def result(self):
-        pass

@@ -29,15 +29,15 @@ with io.open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
     long_description = f.read()
 
 setup(
-    name = "Trees",
+    name = "shajara",
     version = "0.1.0",
     author = "Abdelkrime Aries",
     author_email = "kariminfo0@gmail.com",
     description = ("Manupilating trees"),
-    license = "Apache-2.0",
+    license = "MIT",
     keywords = "trees",
-    url = "https://github.com/kariminf/temp",
-    packages=["trees"],
+    url = "https://github.com/kariminf/shajara",
+    packages=["shajara"],
     #scripts=["exec/aruudy", "exec/aruudy_flask"],
     long_description=long_description,
     long_description_content_type="text/markdown",
@@ -48,7 +48,7 @@ setup(
         "Intended Audience :: Developers",
         "Intended Audience :: Education",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: Apache Software License",
+        "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",

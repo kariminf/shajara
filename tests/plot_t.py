@@ -24,8 +24,8 @@ import sys
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from trees.plot import graphviz_processor
-from trees import Tree, Node
+from shajara.plot import graphviz_processor
+from shajara import Tree, Node
 
 t = Tree(label="a")
 b = Node(label="b")

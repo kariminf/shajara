@@ -1,0 +1,18 @@
+digraph Tree {
+node [shape=box] ;
+N1[label="a"];
+N2[label="b"];
+N1 -> N2 [label="ab"];
+N3[label="e"];
+N2 -> N3 [label="be"];
+N4[label="f"];
+N2 -> N4 [label="bf"];
+N5[label="c"];
+N1 -> N5 [label="ac"];
+N6[label="d"];
+N1 -> N6 [label="ad"];
+N7[label="g"];
+N6 -> N7 [label="dg"];
+N8[label="h"];
+N6 -> N8 [label="dh"];
+}
