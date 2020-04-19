@@ -12,7 +12,7 @@ after_success:
 - codecov
 deploy:
   provider: pypi
-  user: kariminf
+  user: "__token__"
   on:
     python: '3.6'
   password:
