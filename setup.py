@@ -23,6 +23,7 @@ from setuptools import setup
 
 from os import path
 import io
+import shajara
 
 this_directory = path.abspath(path.dirname(__file__))
 with io.open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
@@ -30,7 +31,7 @@ with io.open(path.join(this_directory, "README.md"), encoding="utf-8") as f:
 
 setup(
     name = "shajara",
-    version = "0.1.0",
+    version = shajara.release,
     author = "Abdelkrime Aries",
     author_email = "kariminfo0@gmail.com",
     description = ("Manupilating trees"),
