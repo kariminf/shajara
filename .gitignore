@@ -141,3 +141,6 @@ sphinx/source/api/
 
 # DOT
 *.dot
+
+#virtual environnements
+python3

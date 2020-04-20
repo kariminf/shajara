@@ -187,4 +187,6 @@ class Tree(object):
             The current node
 
         """
+        if not self._node_stack:
+            return None
         return self._node_stack[-1]

@@ -42,4 +42,5 @@ class GenerateProcessor(NodeProcessor):
         if not tree.root:
             tree.root = Node()
             self.__fill_node(tree.root, self.rep)
+            tree._node_stack.append(tree.root)
         return False

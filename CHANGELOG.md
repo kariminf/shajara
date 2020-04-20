@@ -4,6 +4,7 @@
 
 * Tries
 * binary search tree reimplementation
+* improvement on Tree and NodeProcessor APIs
 
 ## 0.1.0 (2020-04-19)
 

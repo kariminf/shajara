@@ -27,7 +27,7 @@ rep = {
 def test_generate_processor():
     generator = GenerateProcessor(rep)
     t = Tree()
-    assert t.current_node().label == ""
+    assert t.current_node() == None
     t.process(processor=generator)
     assert t.current_node().label == "a"
     t.select_child("ab")

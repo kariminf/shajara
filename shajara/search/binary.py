@@ -11,6 +11,8 @@ class BSearchProcessor(NodeProcessor):
             self._rel = "<"
         elif node.value > self._search_value :
             self._rel = ">"
+        else:
+            self._rel = "="
 
         if self._rel not in node.children:
             return []
