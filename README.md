@@ -33,7 +33,7 @@ The arc from the parent to the child is labeled.
 from shajara import Tree, Node
 
 #create a tree with a root labeled "a"
-t = Tree(label="a")
+t = Tree(Node(label="a"))
 # add childrend "b", "c" and "d" to "a"
 t.add_child("ab", Node(label="b")).add_child("ac", Node(label="c")).add_child("ad", Node(label="d"))
 # go to child "b" and add to it children "e" and "f"
@@ -48,7 +48,6 @@ t.up().select_child("ad").add_child("dg", Node(label="g")).add_child("dh", Node(
 
 ```python
 from shajara.create import GenerateProcessor
-from shajara.plot import graphviz_processor
 from shajara import Tree
 
 # the tree representation : the arcs must be labeled
@@ -101,17 +100,17 @@ f.close()
 ### Create unbalanced binary search trees
 
 ```python
-from shajara.search import BSearchTree
+from shajara import Tree, Node
+from shajara.search.binary import binary_adder
 
 values = [5, 9, 2, 11, 3, 7, 2]
 labels = ["five", "nine", "two", "eleven", "three", "seven", "two_again"]
 
-#create a blank binary tree
-t = BSearchTree()
+t = Tree()
 
-#add the elements using search_add
 for i in range(len(values)):
-    t.search_add(values[i], label=labels[i], add=True)
+    binary_adder.set_parameters(Node(value=values[i], label=labels[i]))
+    t.process(processor=binary_adder)
 
 ```
 
@@ -120,29 +119,83 @@ for i in range(len(values)):
 ### Search a value
 
 ```python
-from shajara.search import binary_searcher
+from shajara.search.binary import binary_searcher
 
-# after creating t
-# these are the values we want to search
+# create a tree t with a binary creator
+...
+
 search = [4, 5, 8, 10, 12]
 
 for i in search:
-    #setting the search value to our search pprocessor
     binary_searcher.set_parameters(value=i)
-    # processing the tree using this processor will return a bool (found or not), a node (if found: the node with the value; else the node with the nearest value) and a relationship ("=", ">", "<")
-    found, node, rel = t.process(processor=binary_searcher)
-    if found :
+    rel, node = t.process(processor=binary_searcher)
+    if rel == "=" :
         print (str(i) + " is " + node.label)
+    elif rel =="<" :
+        print (str(i) + " not found. It must be after " + str(node.value))
     else:
-        pos = "before "
-        if (rel =="<"):
-            pos = "after "
-        print (str(i) + " not found. It must be " + pos + str(node.value))
+        print (str(i) + " not found. It must be before " + str(node.value))
 
 ```
 The result :
 ![](assets/readme/bsearch_api_res.png)
 
+### Search the max and the min
+
+```python
+from shajara.search.binary import binary_opti_searcher
+
+# create a tree t with a binary creator
+...
+
+binary_opti_searcher.set_parameters(search="min")
+min_node = t.process(processor=binary_opti_searcher)
+print("The minimum is " + str(min_node.value))
+
+binary_opti_searcher.set_parameters(search="max")
+max_node = t.process(processor=binary_opti_searcher)
+print("The maximum is " + str(max_node.value))
+
+```
+The result :
+![](assets/readme/boptisearch_api_res.png)
+
+## Trie
+
+### Create a trie
+
+```python
+from shajara.search.trie import trie_adder
+
+strings = ["to", "ten", "inn", "in", "tea", "A"]
+
+t = Tree()
+for string in strings:
+    trie_adder.set_parameters(string)
+    t.process(processor=trie_adder)
+```
+
+![](assets/readme/trie_api.png)
+
+### Search a word in the trie
+
+```python
+from shajara.search.trie import trie_searcher
+
+# create a trie t
+...
+
+search = ["tell", "tea", "inner"]
+for string in search:
+    trie_searcher.set_parameters(string)
+    found, node = t.process(processor=trie_searcher)
+    is_word = ""
+    if not node.value:
+        is_word = " (not in dictionary)"
+    print("searching: " + string + ", found: " + found + is_word)
+```
+The result :
+![](assets/readme/trie_api_res.png)
 
 ## License
 

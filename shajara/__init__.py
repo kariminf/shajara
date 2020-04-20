@@ -1,28 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-#  Copyright 2020 Abdelkrime Aries <kariminfo0@gmail.com>
-#
-#  ---- AUTHORS ----
-# 2020	Abdelkrime Aries <kariminfo0@gmail.com>
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-
 from collections import OrderedDict
 
-version = "0.1"
-release = "0.1.0"
+version = "0.2"
+release = "0.2.0"
 
 class NodeProcessor(object):
 
@@ -38,10 +20,10 @@ class NodeProcessor(object):
     def _child_post_process(self, node, child_key):
         return False
 
-    def root_init(self, root):
-        pass
+    def init(self, tree):
+        return False
 
-    def root_final(self, root):
+    def final(self, tree):
         pass
 
     def result(self):
@@ -51,9 +33,9 @@ class NodeProcessor(object):
         children_keys = self._pre_process(node)
         for child_key in children_keys:
             if self._child_pre_process(node, child_key):
-                next
+                continue
             if self.process(node.children[child_key]):
-                next
+                continue
             if self._child_post_process(node, child_key):
                 break
         self._post_process(node)
@@ -76,9 +58,9 @@ class Tree(object):
 
     Parameters
     ----------
-    value : type
+    value : ANY
         the value of the root node
-    label : type
+    label : ANY
         the label of the root node
 
     Attributes
@@ -90,9 +72,12 @@ class Tree(object):
 
     """
 
-    def __init__(self, value=0, label=""):
-        self.root = Node(value, label)
-        self.node_stack = [self.root]
+    def __init__(self, root=None):
+        self.root = None
+        self._node_stack = []
+        if root:
+            self.root = root
+            self._node_stack.append(self.root)
 
     def get_root(self):
         """Returns the root of the tree
@@ -123,9 +108,10 @@ class Tree(object):
             The result of processing, it can be None, a node, a string, etc.
 
         """
-        processor.root_init(self.root)
+        if processor.init(self) :
+            return processor.result()
         processor.process(self.root)
-        processor.root_final(self.root)
+        processor.final(self)
         return processor.result()
 
     def add_child(self, label, node):
@@ -145,7 +131,7 @@ class Tree(object):
             this object
 
         """
-        current = self.node_stack[-1]
+        current = self._node_stack[-1]
         current.append_child(label, node)
         return self
 
@@ -164,10 +150,10 @@ class Tree(object):
             this object
 
         """
-        current = self.node_stack[-1]
+        current = self._node_stack[-1]
         current = current.children[label]
         if current:
-            self.node_stack.append(current)
+            self._node_stack.append(current)
         return self
 
     def up(self):
@@ -184,8 +170,8 @@ class Tree(object):
             this object
 
         """
-        if len(self.node_stack) > 1:
-            self.node_stack.pop()
+        if len(self._node_stack) > 1:
+            self._node_stack.pop()
         return self
 
     def current_node(self):
@@ -201,4 +187,4 @@ class Tree(object):
             The current node
 
         """
-        return self.node_stack[-1]
+        return self._node_stack[-1]

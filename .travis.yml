@@ -9,7 +9,7 @@ install:
 script:
 - py.test --cov=trees tests/*_u.py
 after_success:
-- codecov
+- bash <(curl -s https://codecov.io/bash)
 deploy:
   provider: pypi
   user: "__token__"
